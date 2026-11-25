@@ -1,0 +1,682 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>[hidden]{display:none!important}body{margin:0}</style>
+<title>FORNO Case Study</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&family=Fraunces:ital,opsz,wght,SOFT@0,9..144,300..600,50;1,9..144,300..500,50&display=swap">
+<style>
+/* Layout: one long editorial scroll that follows the film's journey. The ground colour
+   moves from oven (oxblood) to street (night blue) to home (candlelit brown). */
+:root{
+  --bg:#0E1923; --raised:#162736; --tone:#9DB4C4;
+  --text:#F7E9D7; --text-2:rgba(247,233,215,.7); --text-3:rgba(247,233,215,.45);
+  --line:rgba(247,233,215,.13); --line-2:rgba(247,233,215,.24);
+  --tomato:#D84236; --gold:#E0A458; --sage:#9FB5A6;
+  --display:"Fraunces",Georgia,"Times New Roman",serif;
+  --sans:"DM Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  color-scheme:dark;
+}
+body[data-tone="oven"]{--bg:#1D1110;--raised:#2C1917;--tone:#E0A458}
+body[data-tone="street"]{--bg:#0E1923;--raised:#162736;--tone:#9DB4C4}
+body[data-tone="home"]{--bg:#1C1712;--raised:#2B231B;--tone:#F3C9A2}
+*{box-sizing:border-box}
+[hidden]{display:none !important}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;
+  transition:background-color .9s ease}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:var(--bg)}
+img,video{display:block;max-width:100%}
+h1,h2,h3,h4{margin:0;font-weight:400;text-wrap:balance}
+p{margin:0}
+a{color:inherit}
+button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+.wrap{max-width:1240px;margin:0 auto;padding-left:max(24px,env(safe-area-inset-left,0px));padding-right:max(24px,env(safe-area-inset-right,0px))}
+.narrow{max-width:720px}
+.eyebrow{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--tone);font-weight:500;transition:color .9s}
+.cap{font-size:12.5px;color:var(--text-3);margin-top:10px;line-height:1.5}
+.cap b{color:var(--text-2);font-weight:500}
+
+/* top bar */
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:color-mix(in srgb,var(--bg) 88%,transparent);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line);transition:background-color .9s}
+.bar-in{display:flex;align-items:center;gap:20px;min-height:58px;flex-wrap:wrap;padding-block:6px}
+.bar img{height:26px;width:auto}
+.bar .t{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--text-2);border-left:1px solid var(--line-2);padding-left:14px;margin-right:auto}
+.journey{display:flex;align-items:center;gap:8px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--text-3)}
+.journey span{transition:color .5s}
+.journey i{width:18px;height:1px;background:var(--line-2)}
+body[data-tone="oven"] .journey .j-oven,body[data-tone="street"] .journey .j-street,body[data-tone="home"] .journey .j-home{color:var(--tone)}
+.bar a.btn{padding:9px 14px;font-size:13px}
+
+.btn{display:inline-flex;align-items:center;gap:10px;font-size:14.5px;font-weight:500;padding:13px 20px;border-radius:2px;text-decoration:none;transition:background .2s,border-color .2s}
+.btn-primary{background:var(--tomato);color:#FFF6EC}
+.btn-primary:hover{background:#E4523F}
+.btn-ghost{border:1px solid var(--line-2)}
+.btn-ghost:hover{border-color:var(--text-2)}
+
+/* hero */
+.hero{position:relative;height:clamp(560px,88vh,860px);overflow:hidden;isolation:isolate}
+.hero-media{position:absolute;inset:0}
+.hero-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 45%}
+.hero-media .cold{filter:saturate(.35) brightness(.55)}
+.hero-media .tint{position:absolute;inset:0;background:#1f3d59;mix-blend-mode:color;opacity:.6}
+.hero-media .warm{filter:saturate(1.2) brightness(1.1);
+  -webkit-mask-image:radial-gradient(circle 340px at var(--x,52%) var(--y,46%),#000 0%,rgba(0,0,0,.7) 40%,transparent 74%);
+          mask-image:radial-gradient(circle 340px at var(--x,52%) var(--y,46%),#000 0%,rgba(0,0,0,.7) 40%,transparent 74%)}
+.hero-shade{position:absolute;inset:0;background:linear-gradient(to top,var(--bg) 0%,rgba(14,25,35,.82) 32%,rgba(14,25,35,.15) 65%,rgba(14,25,35,.4) 100%);transition:background .9s}
+.hero-in{position:relative;height:100%;display:flex;flex-direction:column;justify-content:flex-end;padding-block:56px}
+.by{margin-top:10px;font-size:14px;color:var(--text-2)}
+.by a{color:var(--text);text-decoration:none;border-bottom:1px solid var(--line-2)}
+.by a:hover{border-color:var(--text)}
+.hero h1{font-family:var(--display);font-size:clamp(40px,6.2vw,88px);line-height:1;letter-spacing:-.025em;max-width:15ch;margin-top:16px}
+.hero h1 em{font-style:italic;color:#F3C9A2}
+.hero .lede{margin-top:22px;max-width:60ch;color:var(--text-2);font-size:18px;line-height:1.6}
+.hero .ctas{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
+.hint{position:absolute;top:22px;right:max(24px,env(safe-area-inset-right,0px));font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--text-3);display:flex;gap:8px;align-items:center}
+.hint i{width:7px;height:7px;border-radius:50%;background:#F3C9A2;box-shadow:0 0 12px 3px rgba(243,201,162,.6)}
+
+.facts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.facts > div{padding:22px 22px 24px 0}
+.facts > div + div{padding-left:22px;border-left:1px solid var(--line)}
+.facts .k{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--text-3)}
+.facts .v{margin-top:8px;font-size:14.5px;color:var(--text-2);line-height:1.55}
+
+/* contents */
+.toc{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0 28px;padding-block:28px 8px}
+.toc a{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--line);text-decoration:none;font-size:14.5px;color:var(--text-2)}
+.toc a:hover{color:var(--text)}
+.toc a b{font-family:var(--display);font-weight:400;color:var(--tone);width:24px;flex:none;transition:color .9s}
+
+/* chapters */
+.ch{padding-block:96px 32px}
+.ch-head{display:grid;grid-template-columns:1fr;gap:18px;margin-bottom:40px;max-width:820px}
+.ch-head h2{font-family:var(--display);font-size:clamp(34px,4.4vw,58px);line-height:1.03;letter-spacing:-.02em;margin-top:14px}
+.ch-head .num{font-family:var(--display);font-size:15px;color:var(--tone);transition:color .9s}
+.ch-head p{color:var(--text-2);font-size:17px;line-height:1.7;max-width:62ch}
+.prose{display:grid;gap:18px;color:var(--text-2);font-size:17px;line-height:1.75;max-width:66ch}
+.prose b{color:var(--text);font-weight:500}
+.prose h3{color:var(--text)}
+.sub{font-family:var(--display);font-size:clamp(24px,2.6vw,32px);line-height:1.15;margin:64px 0 18px;letter-spacing:-.01em}
+.sub-p{color:var(--text-2);max-width:62ch;margin-bottom:24px}
+.pull{font-family:var(--display);font-style:italic;font-size:clamp(26px,3.4vw,44px);line-height:1.2;color:#F3C9A2;max-width:24ch;margin-block:56px;letter-spacing:-.01em}
+
+figure{margin:0}
+.zoom{cursor:zoom-in;position:relative}
+.zoom img{border-radius:2px;width:100%}
+.g2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.g3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.g4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.g5{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+.cover img{aspect-ratio:var(--ar,16/10);object-fit:cover}
+.board{background:var(--raised);padding:12px;border-radius:3px;border:1px solid var(--line);transition:background .9s}
+.research{display:grid;grid-template-columns:1.4fr 1fr;gap:16px}
+.research .tall{grid-row:span 2}
+
+/* territories */
+.terr{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;border-top:1px solid var(--line)}
+.terr li{list-style:none;padding:18px 18px 20px 0;border-bottom:1px solid var(--line);display:flex;gap:14px}
+.terr li b{font-family:var(--display);font-weight:400;color:var(--text-3);width:22px;flex:none}
+.terr li span{display:block;font-family:var(--display);font-size:20px;line-height:1.2}
+.terr li small{display:block;color:var(--text-3);font-size:13.5px;margin-top:4px;line-height:1.5}
+.terr li.pick span{color:#F3C9A2}
+.terr li.pick b{color:var(--tomato)}
+.terr li.pick small{color:var(--text-2)}
+.terr{padding:0}
+
+/* before / after */
+.ba{display:grid;grid-template-columns:minmax(0,1fr) 40px minmax(0,1fr);gap:10px;align-items:center;padding-block:26px;border-top:1px solid var(--line)}
+.ba:last-of-type{border-bottom:1px solid var(--line)}
+.ba figure img{width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:2px}
+.ba .arrow{text-align:center;color:var(--tone);font-size:22px}
+.ba .tag{font-size:11px;letter-spacing:.16em;text-transform:uppercase;margin-bottom:8px;color:var(--text-3)}
+.ba .tag.after{color:var(--sage)}
+.ba .note{grid-column:1/-1;display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:24px;margin-top:6px}
+.ba .note b{font-family:var(--display);font-weight:400;font-size:20px;line-height:1.25}
+.ba .note p{color:var(--text-2);font-size:15px}
+
+.rules{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.rule{background:var(--raised);border:1px solid var(--line);border-radius:3px;padding:22px;transition:background .9s}
+.rule b{display:block;font-family:var(--display);font-weight:400;font-size:20px;line-height:1.25}
+.rule p{color:var(--text-2);font-size:14.5px;margin-top:10px}
+.rule .n{font-family:var(--display);color:var(--tone);font-size:14px;margin-bottom:10px;display:block}
+
+/* failures */
+.fails{columns:3 300px;column-gap:16px}
+.fail{break-inside:avoid;margin-bottom:22px;background:var(--raised);border:1px solid var(--line);border-radius:3px;overflow:hidden;transition:background .9s}
+.fail .m{position:relative}
+.fail .m img,.fail .m video{width:100%;display:block}
+.fail .m .strip{display:grid;grid-template-columns:repeat(var(--n,2),1fr);gap:2px}
+.fail .m .strip img{aspect-ratio:16/10;object-fit:cover}
+.fail .x{position:absolute;top:10px;left:10px;background:rgba(15,15,15,.8);color:#F0B9A0;font-size:10px;letter-spacing:.16em;text-transform:uppercase;padding:5px 8px;border-radius:2px}
+.fail .x.ok{color:#B5CBBC}
+.fail .t{padding:16px 18px 18px}
+.fail .t b{display:block;font-family:var(--display);font-weight:400;font-size:19px;line-height:1.25}
+.fail .t p{color:var(--text-2);font-size:14px;margin-top:8px;line-height:1.6}
+.fail .t .fix{margin-top:10px;font-size:13.5px;color:var(--sage)}
+.fail .t .fix::before{content:"Fix · ";letter-spacing:.06em;text-transform:uppercase;font-size:11px}
+
+.numbers{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-top:40px}
+.numbers > div{padding:24px 24px 26px 0}
+.numbers > div + div{border-left:1px solid var(--line);padding-left:24px}
+.numbers b{display:block;font-family:var(--display);font-weight:400;font-size:clamp(30px,3.4vw,44px);line-height:1;color:#F3C9A2}
+.numbers p{color:var(--text-2);font-size:14px;margin-top:10px}
+
+/* film */
+.film{position:relative;display:block;aspect-ratio:16/9;border-radius:3px;overflow:hidden;text-decoration:none}
+.film img{width:100%;height:100%;object-fit:cover;transition:transform .8s}
+.film:hover img{transform:scale(1.02)}
+.film::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(10,16,22,.88),rgba(10,16,22,.05) 55%)}
+.film .play{position:absolute;left:50%;top:45%;transform:translate(-50%,-50%);width:88px;height:88px;border-radius:50%;background:var(--tomato);display:grid;place-items:center;z-index:2;box-shadow:0 12px 50px rgba(216,66,54,.5)}
+.film .play::before{content:"";border-left:22px solid #FFF6EC;border-top:14px solid transparent;border-bottom:14px solid transparent;margin-left:6px}
+.film .fc{position:absolute;left:28px;right:28px;bottom:24px;z-index:2;display:flex;justify-content:space-between;align-items:end;gap:16px;flex-wrap:wrap}
+.film .fc b{font-family:var(--display);font-weight:400;font-size:clamp(28px,3.6vw,48px);line-height:1}
+.film .fc span{font-size:13px;color:var(--text-2)}
+.moves{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;margin-top:16px}
+.moves figure img{aspect-ratio:16/9;object-fit:cover;border-radius:2px;width:100%}
+.moves figcaption{font-size:12.5px;color:var(--text-2);margin-top:9px;line-height:1.45}
+.moves figcaption b{display:block;font-family:var(--display);font-weight:400;font-size:16px;color:var(--text)}
+
+.reel{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.reel video{width:100%;aspect-ratio:9/16;object-fit:cover;border-radius:2px;background:var(--raised)}
+.pieces{display:grid;grid-template-columns:1.25fr 1.25fr 1fr 1fr 1fr;gap:12px;align-items:end}
+.pieces img{width:100%;aspect-ratio:2/3;object-fit:cover;border-radius:2px}
+.pieces .st img{aspect-ratio:9/16}
+.ugc{display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:40px;align-items:center}
+.ugc a.u{position:relative;display:block;border-radius:3px;overflow:hidden}
+.ugc a.u img{aspect-ratio:9/16;object-fit:cover;width:100%}
+.ugc a.u .play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:62px;height:62px;border-radius:50%;background:var(--tomato);display:grid;place-items:center}
+.ugc a.u .play::before{content:"";border-left:16px solid #FFF6EC;border-top:10px solid transparent;border-bottom:10px solid transparent;margin-left:4px}
+
+/* product */
+.ui{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:20px;align-items:start}
+.ui .shot{border-radius:4px;overflow:hidden;border:1px solid var(--line-2);box-shadow:0 30px 80px rgba(0,0,0,.4)}
+.ui .shot img{width:100%}
+.ui-side{display:grid;gap:20px}
+.callout{border-left:2px solid var(--tone);padding:4px 0 4px 18px}
+.callout b{display:block;font-family:var(--display);font-weight:400;font-size:20px}
+.callout p{color:var(--text-2);font-size:14.5px;margin-top:6px}
+.lk{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:40px}
+.lk > div{border:1px solid var(--line);border-radius:3px;padding:22px}
+.lk h4{font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:500}
+.lk .a h4{color:var(--text-3)}
+.lk .b h4{color:var(--sage)}
+.lk ul{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:8px;color:var(--text-2);font-size:14.5px}
+
+/* reflection */
+.split{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.split > div{border:1px solid var(--line);border-radius:3px;padding:26px;background:var(--raised);transition:background .9s}
+.split h4{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--tone);font-weight:500}
+.split ul{list-style:none;margin:16px 0 0;padding:0;display:grid;gap:10px;color:var(--text-2);font-size:15px}
+.split li{display:flex;gap:10px}
+.split li::before{content:"";width:12px;height:1px;background:var(--tone);margin-top:12px;flex:none}
+
+footer{border-top:1px solid var(--line);padding-block:30px 56px;margin-top:96px;display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;color:var(--text-3);font-size:13px}
+footer b{color:var(--text-2);font-weight:500}
+
+/* lightbox */
+.lb{position:fixed;inset:0;z-index:100;background:rgba(6,9,12,.94);display:grid;place-items:center;
+  padding:calc(24px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) calc(24px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));cursor:zoom-out}
+.lb img{max-width:100%;max-height:calc(100vh - 110px);object-fit:contain;border-radius:2px}
+.lb p{color:var(--text-2);font-size:14px;margin-top:12px;text-align:center;max-width:70ch}
+.lb .x{position:absolute;top:calc(14px + env(safe-area-inset-top,0px));right:max(16px,env(safe-area-inset-right,0px));font-size:28px;width:44px;height:44px;color:var(--text-2)}
+
+@media (max-width:960px){
+  .ch-head,.research,.ui,.ugc,.split,.lk{grid-template-columns:1fr;gap:24px}
+  .research .tall{grid-row:auto}
+  .facts{grid-template-columns:1fr 1fr}
+  .facts > div:nth-child(3){padding-left:0;border-left:0}
+  .facts > div:nth-child(n+3){border-top:1px solid var(--line)}
+  .toc{grid-template-columns:1fr 1fr}
+  .g5,.moves{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .g4,.reel{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .terr,.rules{grid-template-columns:1fr 1fr}
+  .pieces{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .journey{display:none}
+}
+@media (max-width:600px){
+  .g2,.g3,.terr,.rules,.numbers,.toc{grid-template-columns:1fr}
+  .numbers > div + div{border-left:0;padding-left:0;border-top:1px solid var(--line)}
+  .g5,.moves,.pieces{grid-template-columns:1fr 1fr}
+  .ba{grid-template-columns:1fr}
+  .ba .arrow{transform:rotate(90deg);padding-block:2px}
+  .ba .note{grid-template-columns:1fr;gap:8px}
+  .bar .t{display:none}
+  .facts{grid-template-columns:1fr}
+  .facts > div,.facts > div + div{padding-left:0;border-left:0}
+  .facts > div + div{border-top:1px solid var(--line)}
+  .ch{padding-top:72px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none !important;scroll-behavior:auto !important}}
+</style>
+</head><body>
+
+<header class="bar">
+  <div class="bar-in wrap">
+    <img src="img/logo.png" alt="FORNO">
+    <span class="t">Case study · Sudakshina Sridharan</span>
+    <div class="journey" aria-hidden="true"><span class="j-oven">Oven</span><i></i><span class="j-street">Street</span><i></i><span class="j-home">Home</span></div>
+    <a class="btn btn-ghost" id="topStudio" href="studio.html" >Open the prototype ↗</a>
+  </div>
+</header>
+
+<main>
+<!-- ================= HERO ================= -->
+<section class="hero" id="hero" data-tone="street">
+  <div class="hero-media" aria-hidden="true">
+    <img class="cold" src="cs/fr-overhead.jpg" alt="">
+    <div class="tint"></div>
+    <img class="warm" src="cs/fr-overhead.jpg" alt="">
+  </div>
+  <div class="hero-shade"></div>
+  <p class="hint"><i></i>Move over the city. Warmth follows.</p>
+  <div class="hero-in wrap">
+    <p class="eyebrow">Case study · Concept project</p>
+    <p class="by">By <a href="https://www.linkedin.com/in/sudakshinasridharan/" target="_blank" rel="noopener">Sudakshina Sridharan ↗</a></p>
+    <h1>FORNO. A pizzeria that <em>holds the heat.</em></h1>
+    <p class="lede">I invented a Copenhagen pizzeria, built its brand, directed a 46-second winter film with AI image and video tools, and designed the system that lets its agency and its staff run a new campaign every season.</p>
+    <div class="ctas">
+      <a class="btn btn-primary" href="https://youtu.be/uKLgVxUSLTU" target="_blank" rel="noopener">Watch the film ↗</a>
+      <a class="btn btn-ghost" href="studio.html" >Open the prototype ↗</a>
+    </div>
+  </div>
+</section>
+
+<div class="wrap">
+  <div class="facts">
+    <div><p class="k">What I did</p><p class="v">Research, brand identity, campaign strategy, art direction, AI image and video production, film edit, product design</p></div>
+    <div><p class="k">What came out</p><p class="v">A 46s film, a brand system, posters, a menu, packaging, social, and a working two-sided prototype</p></div>
+    <div><p class="k">Tools</p><p class="v">Magnific (Seedream Pro, Kling, Hailuo), DaVinci Resolve, Canva, Claude, ChatGPT</p></div>
+    <div><p class="k">Context</p><p class="v">Self-initiated. FORNO is fictional; everything here was made to show how I'd build it for a real client</p></div>
+  </div>
+  <nav class="toc" aria-label="Chapters">
+    <a href="#brief"><b>01</b>The brief</a><a href="#research"><b>02</b>Brainstorm and research</a><a href="#brand"><b>03</b>Branding</a><a href="#idea"><b>04</b>The campaign idea</a>
+    <a href="#story"><b>05</b>Writing the film</a><a href="#production"><b>06</b>How it was made</a><a href="#failed"><b>07</b>What didn't work</a><a href="#film"><b>08</b>The film</a>
+    <a href="#campaign"><b>09</b>The campaign</a><a href="#product"><b>10</b>The system</a><a href="#credit"><b>11</b>Who did what</a><a href="#hero"><b>↑</b>Back to top</a>
+  </nav>
+</div>
+
+<!-- ================= 01 BRIEF ================= -->
+<section class="ch wrap" id="brief" data-tone="oven">
+  <div class="ch-head">
+    <div><span class="num">01</span><h2>A restaurant doesn't need one campaign. It needs a year of them.</h2></div>
+    <p>Seasons, festivals, local events, holidays: a restaurant has something to say almost every month, and each moment needs design.</p>
+  </div>
+  <div class="prose">
+    <p><b>The brief: an agency builds the brand and the big campaigns, and gives the restaurant a system to keep everyday content on-brand in between.</b> The agency stays a creative partner all year.</p>
+    <p>This project explores one of those triggers: <b>the seasons</b>.</p>
+    <p>The client is invented: FORNO, a neighbourhood pizzeria in Copenhagen. December is produced in full; three lighter seasons show the system repeating.</p>
+  </div>
+</section>
+
+<!-- ================= 02 RESEARCH ================= -->
+<section class="ch wrap" id="research" data-tone="oven">
+  <div class="ch-head">
+    <div><span class="num">02</span><h2>Brainstorm and research.</h2></div>
+    <p>Copenhagen interiors, colour theory, local restaurants and pizzerias, packaging ideas, and illustration styles for the film and the mascot.</p>
+  </div>
+  <div class="research">
+    <figure class="zoom tall board" data-cap="Copenhagen interiors: Noma, Winterspring, Snøhetta. Warm wood, low light, almost nothing on the walls."><img src="cs/r-copenhagen.jpg" alt="Research board of Copenhagen restaurant interiors" loading="lazy"></figure>
+    <figure class="zoom board" data-cap="Cultural pillars and colour: hygge, cycling, harbour swimming, and a first pass at a colour for each season."><img src="cs/r-colors.jpg" alt="Research board on Danish culture and colour" loading="lazy"></figure>
+    <figure class="zoom board" data-cap="Competitors: menus and Instagram from Bæst, Magstræde 16 and Surt. What local restaurants already say and show."><img src="cs/r-restaurant.jpg" alt="Research board of Copenhagen restaurant competitors" loading="lazy"></figure>
+  </div>
+  <div class="g2" style="margin-top:16px">
+    <figure class="zoom board" data-cap="European restaurant branding and takeaway packaging."><img src="cs/r-european.jpg" alt="Research board of European restaurant branding" loading="lazy"></figure>
+    <figure class="zoom board" data-cap="Illustration: old children's books, oil pastel, imperfect line."><img src="cs/r-illustration.jpg" alt="Research board of illustration inspiration" loading="lazy"></figure>
+  </div>
+  <p class="cap">Click any board to see it full size.</p>
+
+  <h3 class="sub">Real photographs, used as a compass</h3>
+  <p class="sub-p">Real photographs of Copenhagen, used as references for light and architecture, made the city look like itself.</p>
+  <div class="g4">
+    <figure class="zoom cover" style="--ar:3/4"><img src="cs/ref-window.jpg" alt="Copenhagen window at dusk" loading="lazy"></figure>
+    <figure class="zoom cover" style="--ar:3/4"><img src="cs/ref-bridge.jpg" alt="Copenhagen harbour bridge at night" loading="lazy"></figure>
+    <figure class="zoom cover" style="--ar:3/4"><img src="cs/ref-ice.jpg" alt="Nyhavn in winter with ice on the canal" loading="lazy"></figure>
+    <figure class="zoom cover" style="--ar:3/4"><img src="cs/ref-table.jpg" alt="A candlelit dinner table" loading="lazy"></figure>
+  </div>
+  <p class="cap">Reference photography from Unsplash, including work by Sebastian Puskeiler, Nurzhan Shakenov and Carlos Tejada. Used as mood references, not in the final work.</p>
+</section>
+
+<!-- ================= 03 BRAND ================= -->
+<section class="ch wrap" id="brand" data-tone="oven">
+  <div class="ch-head">
+    <div><span class="num">03</span><h2>Branding: two directions.</h2></div>
+    <p>One playful and fully illustrated; one calm and editorial, keeping only the best of the first.</p>
+  </div>
+  <h3 class="sub" style="margin-top:0">First approach: an illustrated neighbourhood pizzeria</h3>
+  <p class="sub-p">Oil-pastel characters, a striped awning, Nyhavn everywhere. Warm, but busy, and close to many other pizza brands.</p>
+  <div class="g2">
+    <figure class="zoom board" data-cap="A family of six mascots. Five of them were cut."><img src="cs/old-mascots.jpg" alt="Early mascot family exploration" loading="lazy"></figure>
+    <figure class="zoom board" data-cap="An early brand board. The palette and lettering were too bright and too busy."><img src="cs/old-brand.jpg" alt="Early illustrated brand board" loading="lazy"></figure>
+  </div>
+  <h3 class="sub">Second approach: a calm restaurant with one illustrated touch</h3>
+  <div class="prose">
+    <p>Two things stayed: the <b>hand-painted wordmark</b> and <b>one character</b>, the rider. Everything else became calm and editorial: <b>80 per cent restraint, 20 per cent illustrated warmth.</b></p>
+  </div>
+  <div class="g3" style="margin-top:32px">
+    <figure class="zoom board" style="background:#FBF3E6" data-cap="The final wordmark, painted by hand. It's never retyped or redrawn by a model."><img src="img/logo.png" alt="FORNO wordmark" style="padding:16% 10%" loading="lazy"></figure>
+    <figure class="zoom" data-cap="One mascot, four poses. Used on packaging and small moments, never in the interface."><img src="cs/mascot-sheet.jpg" alt="Final mascot character sheet" loading="lazy"></figure>
+    <figure class="zoom cover" style="--ar:auto" data-cap="Kraft box, checkerboard on the sides only, the mark and the rider on the lid."><img src="img/br-box.jpg" alt="FORNO pizza box" loading="lazy" style="aspect-ratio:4/3;object-fit:cover"></figure>
+  </div>
+  <p style="margin-top:28px"><a class="btn btn-ghost" href="FORNO_Brand_Guidelines.pdf" target="_blank" rel="noopener">Brand guidelines (PDF) ↗</a></p>
+  <div class="g4" style="margin-top:14px">
+    <figure class="zoom cover" style="--ar:4/5"><img src="img/br-wrap.jpg" alt="Tomato-print wrapping paper" loading="lazy"></figure>
+    <figure class="zoom cover" style="--ar:4/5"><img src="img/br-cup.jpg" alt="Takeaway cup in snow" loading="lazy"></figure>
+    <figure class="zoom cover" style="--ar:4/5"><img src="img/br-stack.jpg" alt="Stacked pizza boxes" loading="lazy"></figure>
+    <figure class="zoom cover" style="--ar:4/5"><img src="img/br-sign.jpg" alt="FORNO sign at night" loading="lazy"></figure>
+  </div>
+</section>
+
+<!-- ================= 04 IDEA ================= -->
+<section class="ch wrap" id="idea" data-tone="street">
+  <div class="ch-head">
+    <div><span class="num">04</span><h2>Nine Christmas stories. Four of them became one film.</h2></div>
+    <p>December, explored as an ad film. Nine stories, each weighed against credits and what the tools could do well.</p>
+  </div>
+  <ol class="terr">
+    <li class="pick"><b>1</b><div><span>Is It Here Yet?</span><small>A child keeps asking if the pizza has arrived. Each question cuts to where it is now: leaving the oven, crossing the canal, turning onto her street.</small></div></li>
+    <li class="pick"><b>2</b><div><span>Follow the Box</span><small>The box is the hero. From the moment the lid closes, the camera never leaves it: counter, carrier, bicycle, canal, stairwell, table.</small></div></li>
+    <li><b>3</b><div><span>Crumbs Knows</span><small>An old dog waits by the door every evening. The family thinks it's waiting for them. It's waiting for the FORNO crusts.</small></div></li>
+    <li><b>4</b><div><span>Before the Oven</span><small>A chef leaves the kitchen to gather the Christmas menu: flour, cheese, tomatoes, herbs. Flour dust turns to snow; tomato red turns to FORNO red.</small></div></li>
+    <li><b>5</b><div><span>Wait — Pineapple?</span><small>A fast, comic relay of ingredients racing to the oven, until a child's voice stops everything with one last request: pineapple.</small></div></li>
+    <li><b>6</b><div><span>The Metro Slice</span><small>A metro carriage full of tinsel and Christmas jumpers. One passenger carries a warm FORNO box, and one by one everyone stops looking at the decorations.</small></div></li>
+    <li><b>7</b><div><span>A Table for Those Staying</span><small>Not everyone goes home for Christmas. FORNO sets a long table for people spending December in Copenhagen away from family. One guest hesitates at the door, then comes in.</small></div></li>
+    <li class="pick"><b>8</b><div><span>Close Enough to Taste</span><small>No plot, only appetite. Extreme close-ups of dough, fire, cheese and steam, with sound doing half the work.</small></div></li>
+    <li class="pick"><b>9</b><div><span>The Longest Way Home</span><small>Copenhagen at the end of a December day: people heading home by bus, bike and metro, while one hot pizza crosses the same city.</small></div></li>
+  </ol>
+  <div class="prose" style="margin-top:36px">
+    <p><b>The film</b> combines 1, 2 and 9, with 8 for close-ups: a child waits at a window while a hot FORNO box crosses a cold December city. The box is the only warm thing in it. Hence the title, <b>Hold the Heat</b>.</p>
+  </div>
+</section>
+
+<!-- ================= 05 STORY ================= -->
+<section class="ch wrap" id="story" data-tone="street">
+  <div class="ch-head">
+    <div><span class="num">05</span><h2>The first boards were a montage. The final one withholds.</h2></div>
+    <p>The early storyboards, built in ChatGPT, showed everything. Many shots were cut so the story holds something back.</p>
+  </div>
+  <div class="g3">
+    <figure class="zoom" data-cap="Storyboard 3"><img src="cs/sb3.jpg" alt="Storyboard 3" loading="lazy"></figure>
+    <figure class="zoom" data-cap="Storyboard 4"><img src="cs/sb4.jpg" alt="Storyboard 4" loading="lazy"></figure>
+    <figure class="zoom" data-cap="Storyboard 5"><img src="cs/sb5.jpg" alt="Storyboard 5" loading="lazy"></figure>
+  </div>
+  <p class="cap">Three of the early storyboards, built in ChatGPT. Click to enlarge.</p>
+
+  <h3 class="sub">The revised storyboard</h3>
+  <p class="sub-p">Reworked with Claude into one board: forty shots, five movements, each timed and marked warm or cold. Every shot became a still, the stills became an animatic, and only the shots that survived were animated.</p>
+  <figure class="zoom board" data-cap="Revised storyboard: 40 shots in five movements, each timed and marked warm or cold."><img src="cs/shootingboard.jpg" alt="Hold the Heat shooting board" loading="lazy"></figure>
+</section>
+
+<!-- ================= 06 PRODUCTION ================= -->
+<section class="ch wrap" id="production" data-tone="street">
+  <div class="ch-head">
+    <div><span class="num">06</span><h2>The method I settled into.</h2></div>
+    <p>Most of the work was learning why a frame failed. Six habits came out of it.</p>
+  </div>
+  <div class="rules">
+    <div class="rule"><span class="n">1</span><b>Stills first, motion last.</b><p>Every shot locked as a still before animating. Magnific's select-and-edit fixed details without starting over.</p></div>
+    <div class="rule"><span class="n">2</span><b>AI, Canva and my own hands.</b><p>AI made the pictures; type, layout and the real logo, added in Canva and by hand, finished them.</p></div>
+    <div class="rule"><span class="n">3</span><b>One model for each job.</b><p>Seedream Pro for stills, Kling for video. Switching models changed faces and light.</p></div>
+    <div class="rule"><span class="n">4</span><b>85 per cent cold, 15 warm.</b><p>Mostly cold blue, one warm source, in every prompt. Forty shots, one night.</p></div>
+    <div class="rule"><span class="n">5</span><b>Camera moves, named and few.</b><p>"Truck right", "push in": one simple named move per shot.</p></div>
+    <div class="rule"><span class="n">6</span><b>Hands, kept simple.</b><p>Still the hardest part. Close-ups only, one simple action. Still learning.</p></div>
+  </div>
+
+  <h3 class="sub">Before and after</h3>
+  <p class="sub-p">The left image is an early attempt; the right is the final.</p>
+  <div class="ba">
+    <figure><p class="tag">Before</p><img class="zoom" src="cs/f-street.jpg" alt="Early generic snowy street" loading="lazy"></figure><span class="arrow" aria-hidden="true">→</span>
+    <figure><p class="tag after">After</p><img class="zoom" src="cs/f-street-fixed.jpg" alt="Improved Copenhagen street" loading="lazy"></figure>
+    <div class="note"><b>The city</b><p>A generic old town, until real Copenhagen references fixed it.</p></div>
+  </div>
+  <div class="ba">
+    <figure><p class="tag">Before</p><img class="zoom" src="cs/f-rest.jpg" alt="Early restaurant interior" loading="lazy"></figure><span class="arrow" aria-hidden="true">→</span>
+    <figure><p class="tag after">After</p><img class="zoom" src="img/in-pass.jpg" alt="Final restaurant interior, the pass" loading="lazy"></figure>
+    <div class="note"><b>The restaurant</b><p>From a stage set to a working kitchen.</p></div>
+  </div>
+  <div class="ba">
+    <figure><p class="tag">Before</p><img class="zoom" src="cs/f-girl.jpg" alt="Early girl at the window" loading="lazy"></figure><span class="arrow" aria-hidden="true">→</span>
+    <figure><p class="tag after">After</p><img class="zoom" src="cs/fr-face.jpg" alt="Final girl at the frosted window" loading="lazy"></figure>
+    <div class="note"><b>The child</b><p>A profile angle let the glass and her face share the frame.</p></div>
+  </div>
+  <div class="ba">
+    <figure><p class="tag">Before</p><img class="zoom" src="cs/f-box.jpg" alt="Box opening from the wrong side" loading="lazy"></figure><span class="arrow" aria-hidden="true">→</span>
+    <figure><p class="tag after">After</p><img class="zoom" src="cs/ex9.jpg" alt="Box opening correctly" loading="lazy"></figure>
+    <div class="note"><b>The box</b><p>The prompt had to spell out which edge lifts.</p></div>
+  </div>
+</section>
+
+<!-- ================= 07 FAILED ================= -->
+<section class="ch wrap" id="failed" data-tone="street">
+  <div class="ch-head">
+    <div><span class="num">07</span><h2>What didn't work, and what it taught me.</h2></div>
+    <p>Frames and clips that didn't make it, and what changed because of them.</p>
+  </div>
+  <div class="fails">
+    <div class="fail"><div class="m"><div class="strip" style="--n:2"><img class="zoom" src="cs/f-door2.jpg" alt="" loading="lazy"><img class="zoom" src="cs/f-door4.jpg" alt="" loading="lazy"><img class="zoom" src="cs/f-door3.jpg" alt="" loading="lazy"><img class="zoom" src="cs/f-door-inside.jpg" alt="" loading="lazy"></div><span class="x">Cut</span></div>
+      <div class="t"><b>The handoff at the door</b><p>Many tries. Blurred faces, crowded doorways, a courier inside the hallway.</p><p class="fix">The arrival happens on the table instead. We never see the door open.</p></div></div>
+
+    <div class="fail"><div class="m"><video src="cv/failedvideosmoketoomuch.mp4" poster="cs/v-failedvideosmoketoomuch.jpg" muted loop playsinline autoplay preload="metadata" aria-label="Failed clip: the rider's breath reads as smoke"></video><span class="x">Rejected</span></div>
+      <div class="t"><b>The rider who looked like he was smoking</b><p>"Camera static" on a moving cyclist made him stop and exhale. It read as smoking.</p><p class="fix">Travel language and a named camera move.</p></div></div>
+
+    <div class="fail"><div class="m"><div class="strip" style="--n:3"><img class="zoom" src="cs/f-fam1.jpg" alt="" loading="lazy"><img class="zoom" src="cs/f-fam3.jpg" alt="" loading="lazy"><img class="zoom" src="cs/f-fam2.jpg" alt="" loading="lazy"></div><span class="x">Rejected</span></div>
+      <div class="t"><b>The family dinner</b><p>Several models, many prompts. Always a stock Christmas photo.</p><p class="fix">Shoot from directly above. Hands and plates tell the story; faces turn away.</p></div></div>
+
+    <div class="fail"><div class="m"><video src="cv/diningtablevidfail.mp4" poster="cs/v-diningtablevidfail.jpg" muted loop playsinline autoplay preload="metadata" aria-label="Failed clip: dinner table in motion"></video><span class="x">Rejected</span></div>
+      <div class="t"><b>The table in motion</b><p>Within a second, faces drifted and hands merged into cutlery.</p><p class="fix">A slow push-in on the still, done in DaVinci.</p></div></div>
+
+    <div class="fail"><div class="m"><img class="zoom" src="cs/f-logo.jpg" alt="Restaurant with an invented logo" loading="lazy"><span class="x">Rejected</span></div>
+      <div class="t"><b>The model wrote its own logo</b><p>It invented a sign that isn't the brand.</p><p class="fix">The real mark goes on afterwards, in Canva.</p></div></div>
+
+    <div class="fail"><div class="m"><video src="cv/aihandsfailed.mp4" poster="cs/v-aihandsfailed.jpg" muted loop playsinline autoplay preload="metadata" aria-label="Failed clip: hands"></video><span class="x">Rejected</span></div>
+      <div class="t"><b>Hands</b><p>As soon as anyone held something, fingers multiplied.</p><p class="fix">Hands only in close-ups with one simple action: lifting a slice.</p></div></div>
+
+    <div class="fail"><div class="m"><img class="zoom" src="cs/f-illus1.jpg" alt="Illustrated film experiment" loading="lazy"><span class="x">Explored</span></div>
+      <div class="t"><b>Could the whole film be drawn?</b><p>Lovely, but it made FORNO a children's brand.</p><p class="fix">Illustration stays on the packaging. The film is photographic.</p></div></div>
+
+    <div class="fail"><div class="m"><video src="cv/deliveryfunnyfail.mp4" poster="cs/v-deliveryfunnyfail.jpg" muted loop playsinline autoplay preload="metadata" aria-label="Failed clip: delivery"></video><span class="x">Rejected</span></div>
+      <div class="t"><b>The delivery, animated</b><p>Funny for the wrong reasons.</p><p class="fix">Cut. The courier's face is never shown; he only carries the heat.</p></div></div>
+
+    <div class="fail"><div class="m"><div class="strip" style="--n:2"><img class="zoom" src="cs/f-aerial1.jpg" alt="" loading="lazy"><img class="zoom" src="cs/f-aerial3.jpg" alt="" loading="lazy"></div><span class="x">Cut</span></div>
+      <div class="t"><b>Beautiful aerials that said nothing</b><p>Gorgeous, with no story job.</p><p class="fix">Three aerials kept, each one moving the rider forward.</p></div></div>
+
+    <div class="fail"><div class="m"><img class="zoom" src="cs/f-first.jpg" alt="The first frame that worked" loading="lazy"><span class="x ok">Turning point</span></div>
+      <div class="t"><b>The first frame that worked</b><p>Rough, but the mood was right. Everything after was measured against it.</p></div></div>
+  </div>
+
+</section>
+
+<!-- ================= 08 FILM ================= -->
+<section class="ch wrap" id="film" data-tone="home">
+  <div class="ch-head">
+    <div><span class="num">08</span><h2>Hold the Heat</h2></div>
+    <p>46 seconds, five movements, one night in Copenhagen. Sound on.</p>
+  </div>
+  <a class="film" href="https://youtu.be/uKLgVxUSLTU" target="_blank" rel="noopener">
+    <img src="cs/fr-wait.jpg" alt="Still from Hold the Heat: a girl waits at a window" loading="lazy"><span class="play" aria-hidden="true"></span>
+    <span class="fc"><b>Hold the Heat</b><span>46s · 16:9 · Watch on YouTube ↗</span></span>
+  </a>
+  <div class="moves">
+    <figure class="zoom"><img src="cs/fr-face.jpg" alt="" loading="lazy"><figcaption><b>The Wait</b>A child at a fogged window. We aren't told what for.</figcaption></figure>
+    <figure class="zoom"><img src="cs/fr-oven.jpg" alt="" loading="lazy"><figcaption><b>The Fire</b>The hottest frame in the film, then into the box.</figcaption></figure>
+    <figure class="zoom"><img src="cs/fr-rider.jpg" alt="" loading="lazy"><figcaption><b>The City</b>Short cuts, snow, the only warm thing on the street.</figcaption></figure>
+    <figure class="zoom"><img src="cs/fr-pull.jpg" alt="" loading="lazy"><figcaption><b>The Arrival</b>The lid lifts. Steam, cheese, candles.</figcaption></figure>
+    <figure class="zoom"><img src="cs/fr-bokeh.jpg" alt="" loading="lazy"><figcaption><b>The Mark</b>The street dissolves; the wordmark is lit.</figcaption></figure>
+  </div>
+
+  <h3 class="sub">Shots that didn't make the cut</h3>
+  <p class="sub-p">Good frames with no place in 46 seconds.</p>
+  <div class="g4">
+    <figure class="zoom cover"><img src="cs/ex1.jpg" alt="Rider along Nyhavn" loading="lazy"></figure>
+    <figure class="zoom cover"><img src="cs/ex8.jpg" alt="Pizza on the peel" loading="lazy"></figure>
+    <figure class="zoom cover"><img src="cs/ex4.jpg" alt="Closed box by the oven" loading="lazy"></figure>
+    <figure class="zoom cover"><img src="cs/ex13.jpg" alt="Snowy street with lights" loading="lazy"></figure>
+    <figure class="zoom cover"><img src="cs/fr-city.jpg" alt="Copenhagen from above" loading="lazy"></figure>
+    <figure class="zoom cover"><img src="cs/ex7.jpg" alt="The FORNO kitchen" loading="lazy"></figure>
+    <figure class="zoom cover"><img src="cs/ex5.jpg" alt="A set table at home" loading="lazy"></figure>
+    <figure class="zoom cover"><img src="cs/fr-table.jpg" alt="Overhead table with the FORNO box" loading="lazy"></figure>
+  </div>
+</section>
+
+<!-- ================= 09 CAMPAIGN ================= -->
+<section class="ch wrap" id="campaign" data-tone="home">
+  <div class="ch-head">
+    <div><span class="num">09</span><h2>One idea, carried into everything the restaurant puts out.</h2></div>
+    <p>Menu, posters, stories, a Reel, UGC and the restaurant itself.</p>
+  </div>
+  <div class="pieces">
+    <figure class="zoom"><img src="img/po-heat.jpg" alt="Hold the Heat poster" loading="lazy"><p class="cap">Poster · Hold the Heat</p></figure>
+    <figure class="zoom"><img src="img/po-duck.jpg" alt="Christmas Eve poster" loading="lazy"><p class="cap">Poster · Christmas Eve</p></figure>
+    <figure class="zoom st"><img src="img/st-long.jpg" alt="Long Nights story" loading="lazy"><p class="cap">Story · Long nights</p></figure>
+    <figure class="zoom st"><img src="img/st-dough.jpg" alt="24 Days, day 3" loading="lazy"><p class="cap">24 Days · Day 3</p></figure>
+    <figure class="zoom st"><img src="img/st-busy.jpg" alt="24 Days, day 14" loading="lazy"><p class="cap">24 Days · Day 14</p></figure>
+  </div>
+  <p class="cap" style="margin-top:14px">Posters may each use one expressive headline face. The painted wordmark, the colours and the forno.dk sign-off never change.</p>
+
+  <h3 class="sub">The December menu</h3>
+  <p class="sub-p">Seven dishes, priced against real Copenhagen menus.</p>
+  <div class="g2">
+    <figure class="zoom"><img src="img/menu-a4.jpg" alt="December menu, A4" loading="lazy"><p class="cap">A4 menu</p></figure>
+    <figure class="zoom"><img src="img/tablecard.jpg" alt="Christmas Eve table card" loading="lazy"><p class="cap">A6 table card, both sides</p></figure>
+  </div>
+  <div class="g5" style="margin-top:14px">
+    <figure class="zoom cover" style="--ar:1"><img src="img/mn1.jpg" alt="Winter Forest" loading="lazy"><p class="cap">Winter Forest · 168</p></figure>
+    <figure class="zoom cover" style="--ar:1"><img src="img/mn2.jpg" alt="Frost and Honey" loading="lazy"><p class="cap">Frost &amp; Honey · 172</p></figure>
+    <figure class="zoom cover" style="--ar:1"><img src="img/mn3.jpg" alt="The Long Way Home" loading="lazy"><p class="cap">The Long Way Home · 178</p></figure>
+    <figure class="zoom cover" style="--ar:1"><img src="img/mn4.jpg" alt="Christmas Eve" loading="lazy"><p class="cap">Christmas Eve · 185</p></figure>
+    <figure class="zoom cover" style="--ar:1"><img src="img/mn5.jpg" alt="Rice and almond pudding" loading="lazy"><p class="cap">Rice &amp; Almond · 78</p></figure>
+  </div>
+
+  <h3 class="sub">Close Enough to Taste</h3>
+  <p class="sub-p">Macro shots, close sound, no music.</p>
+  <div class="reel">
+    <video src="vid/ct1.mp4" poster="img/ct1.jpg" muted loop playsinline autoplay preload="metadata" aria-label="Macro shot 1"></video>
+    <video src="vid/ct2.mp4" poster="img/ct2.jpg" muted loop playsinline autoplay preload="metadata" aria-label="Macro shot 2"></video>
+    <video src="vid/ct3.mp4" poster="img/ct3.jpg" muted loop playsinline autoplay preload="metadata" aria-label="Macro shot 3"></video>
+    <video src="vid/ct4.mp4" poster="img/ct4.jpg" muted loop playsinline autoplay preload="metadata" aria-label="Macro shot 4"></video>
+  </div>
+
+  <h3 class="sub">Friday at FORNO</h3>
+  <div class="ugc">
+    <a class="u" href="https://youtube.com/shorts/w-UFHT8LMCA" target="_blank" rel="noopener"><img src="cs/ugc.jpg" alt="A guest at a FORNO table talking about the duck pizza" loading="lazy"><span class="play" aria-hidden="true"></span></a>
+    <div class="prose">
+      <p>The opposite of the hero film: a guest, a phone, the duck pizza.</p>
+      <p><b>"They put Christmas dinner on a pizza. I was ready to hate it. I'm coming back Tuesday."</b></p>
+      
+      <a class="btn btn-ghost" href="https://youtube.com/shorts/w-UFHT8LMCA" target="_blank" rel="noopener" style="justify-self:start">Watch on YouTube ↗</a>
+    </div>
+  </div>
+
+  <h3 class="sub">The restaurant</h3>
+  <p class="sub-p">Somewhere you'd want to sit in December.</p>
+  <div class="g3">
+    <figure class="zoom cover" style="--ar:4/5"><img src="img/in-window.jpg" alt="The window" loading="lazy"></figure>
+    <figure class="zoom cover" style="--ar:4/5"><img src="img/in-table.jpg" alt="Table for two" loading="lazy"></figure>
+    <figure class="zoom cover" style="--ar:4/5"><img src="img/in-room2.jpg" alt="The dining room" loading="lazy"></figure>
+  </div>
+</section>
+
+<!-- ================= 10 PRODUCT ================= -->
+<section class="ch wrap" id="product" data-tone="home">
+  <div class="ch-head">
+    <div><span class="num">10</span><h2>Content changes. Design stays protected.</h2></div>
+    <p>A working prototype with two sides: the agency plans each season; the staff update the menu every day.</p>
+  </div>
+  <div class="ui">
+    <figure class="shot zoom" data-cap="Overview: one brand, four seasons, two views."><img src="cs/ui-overview.jpg" alt="Prototype overview screen" loading="lazy"></figure>
+    <div class="ui-side">
+      <div class="callout"><b>Agency view</b><p>Each season's idea, film, menu and deliverables, in one place.</p></div>
+      <div class="callout"><b>Restaurant view</b><p>Change a dish, and the menu card, post and story update together, on-brand.</p></div>
+      <div class="callout"><b>Brand rules</b><p>Logo, colour, type, photography and how FORNO writes. Both views follow them.</p></div>
+      <a class="btn btn-primary" href="studio.html" target="_blank" rel="noopener" style="justify-self:start">Try the prototype ↗</a>
+    </div>
+  </div>
+  <div class="g2" style="margin-top:20px">
+    <figure class="shot zoom" style="border-radius:4px;overflow:hidden;border:1px solid var(--line-2)" data-cap="Agency view: Winter selected."><img src="cs/ui-agency.jpg" alt="Agency view" loading="lazy"></figure>
+    <figure class="shot zoom" style="border-radius:4px;overflow:hidden;border:1px solid var(--line-2)" data-cap="Restaurant view: red outlines show what staff can edit; dashed outlines show what the studio has locked."><img src="cs/ui-restaurant.jpg" alt="Restaurant view" loading="lazy"></figure>
+  </div>
+  <div class="lk">
+    <div class="a"><h4>Locked by the studio</h4><ul><li>Wordmark and clear space</li><li>Typefaces and colour</li><li>Layouts for menu, post and story</li><li>Photo crop and grade</li></ul></div>
+    <div class="b"><h4>Changed by the restaurant</h4><ul><li>Dish names, in both languages</li><li>Descriptions and prices</li><li>What's available today</li><li>Which approved photo to use</li></ul></div>
+  </div>
+  <h3 class="sub">Interaction that carries the idea</h3>
+  <div class="rules">
+    <div class="rule"><b>Warmth follows you</b><p>Warm light follows the cursor through a cold city.</p></div>
+    <div class="rule"><b>Oven, street, home</b><p>This page moves from oven red to night blue to candlelight.</p></div>
+    <div class="rule"><b>A live preview</b><p>Every edit appears instantly in three formats.</p></div>
+  </div>
+</section>
+
+<!-- ================= 11 CREDIT ================= -->
+<section class="ch wrap" id="credit" data-tone="home">
+  <div class="ch-head">
+    <div><span class="num">11</span><h2>What I did, and what the tools did.</h2></div>
+    <p>Researched, written, directed and edited by me; images and motion produced with AI.</p>
+  </div>
+  <div class="split">
+    <div><h4>Me</h4><ul><li>The brief, the research and the restaurant itself</li><li>The brand direction, and the decision to drop the first one</li><li>Nine story ideas and the one that was chosen</li><li>Storyboards, shot list and every prompt</li><li>Choosing, rejecting and fixing each frame</li><li>The edit, the pacing, the sound and the logo reveal</li><li>The menu, the copy and the prototype's design</li></ul></div>
+    <div><h4>The tools</h4><ul><li>Magnific: Seedream Pro for stills, Kling for video, Hailuo for early video trials, all from my references and prompts</li><li>DaVinci Resolve: edit, grade, sound, push-ins</li><li>Canva: type and layout for posters and menus</li><li>Claude: thinking partner, copy drafts and the prototype's code</li><li>ChatGPT: second opinions and research</li></ul></div>
+  </div>
+  <div class="prose" style="margin-top:40px">
+    <h3 class="sub" style="margin-top:0">What I learned</h3>
+    <p><b>Story and direction are a craft of their own</b>, and what I'm studying next.</p>
+    <p><b>Real references beat long prompts.</b></p>
+    <p><b>Quality follows budget.</b> The film is 720p, made on a small credit budget; more credits would mean higher resolution.</p>
+    <p><b>Hands are still unsolved.</b></p>
+  </div>
+  <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:36px">
+    <a class="btn btn-primary" href="https://youtu.be/uKLgVxUSLTU" target="_blank" rel="noopener">Watch the film ↗</a>
+    <a class="btn btn-ghost" href="studio.html" >Open the prototype ↗</a>
+  </div>
+</section>
+
+<div class="wrap"><footer><span><b>FORNO is a fictional restaurant, created for this concept project.</b> All campaign imagery is AI-generated under my direction.</span><span>Sudakshina Sridharan · <a href="https://www.linkedin.com/in/sudakshinasridharan/" target="_blank" rel="noopener">LinkedIn ↗</a> · 2026</span></footer></div>
+</main>
+
+<div class="lb" id="lb" hidden role="dialog" aria-modal="true" aria-label="Enlarged image"><button class="x" type="button" aria-label="Close">×</button><div><img id="lbImg" alt=""><p id="lbCap"></p></div></div>
+
+<script>
+(function(){
+"use strict";
+const $ = s => document.querySelector(s), $$ = s => Array.from(document.querySelectorAll(s));
+const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* scroll journey: oven -> street -> home */
+document.body.dataset.tone = "street";
+const secs = $$("[data-tone]").filter(e => e !== document.body);
+const io = new IntersectionObserver(es => {
+  es.forEach(e => { if(e.isIntersecting) document.body.dataset.tone = e.target.dataset.tone; });
+}, { rootMargin: "-45% 0px -50% 0px" });
+secs.forEach(s => io.observe(s));
+
+/* warmth follows the cursor */
+const hero = $("#hero");
+if(hero && !still){
+  hero.addEventListener("pointermove", e => {
+    const r = hero.getBoundingClientRect();
+    hero.style.setProperty("--x", (e.clientX - r.left) + "px");
+    hero.style.setProperty("--y", (e.clientY - r.top) + "px");
+  });
+  hero.addEventListener("pointerleave", () => { hero.style.removeProperty("--x"); hero.style.removeProperty("--y"); });
+}
+
+/* lightbox */
+const lb = $("#lb");
+function open(src, cap){ $("#lbImg").src = src; $("#lbImg").alt = cap || ""; $("#lbCap").textContent = cap || ""; lb.hidden = false; }
+function close(){ lb.hidden = true; $("#lbImg").removeAttribute("src"); }
+document.addEventListener("click", e => {
+  const z = e.target.closest(".zoom"); if(!z || e.target.closest("a")) return;
+  const img = z.tagName === "IMG" ? z : z.querySelector("img"); if(!img) return;
+  const cap = z.dataset.cap || (z.closest("figure") && z.closest("figure").dataset.cap) || img.alt;
+  open(img.currentSrc || img.src, cap);
+});
+lb.addEventListener("click", close);
+document.addEventListener("keydown", e => { if(e.key === "Escape" && !lb.hidden) close(); });
+
+/* videos: respect reduced motion */
+if(still) $$("video").forEach(v => { v.removeAttribute("autoplay"); v.pause(); v.controls = true; });
+})();
+</script>
+
+</body></html>
