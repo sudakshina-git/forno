@@ -49,6 +49,10 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 .journey i{width:18px;height:1px;background:var(--line-2)}
 body[data-tone="oven"] .journey .j-oven,body[data-tone="street"] .journey .j-street,body[data-tone="home"] .journey .j-home{color:var(--tone)}
 .bar a.btn{padding:9px 14px;font-size:13px}
+.pages{display:flex;flex:none;border:1px solid var(--line-2);border-radius:2px;overflow:hidden}
+.pages a{padding:9px 14px;font-size:12.5px;text-decoration:none;color:var(--text-2);white-space:nowrap;transition:background .2s,color .2s}
+.pages a:hover{color:var(--text);background:rgba(247,233,215,.07)}
+.pages a[aria-current="page"]{background:var(--tomato);color:#FFF6EC}
 
 .btn{display:inline-flex;align-items:center;gap:10px;font-size:14.5px;font-weight:500;padding:13px 20px;border-radius:2px;text-decoration:none;transition:background .2s,border-color .2s}
 .btn-primary{background:var(--tomato);color:#FFF6EC}
@@ -257,7 +261,10 @@ footer b{color:var(--text-2);font-weight:500}
     <img src="img/logo.png" alt="FORNO">
     <span class="t">Case study · Sudakshina Sridharan</span>
     <div class="journey" aria-hidden="true"><span class="j-oven">Oven</span><i></i><span class="j-street">Street</span><i></i><span class="j-home">Home</span></div>
-    <a class="btn btn-ghost" id="topStudio" href="studio.html" >Open the prototype ↗</a>
+    <nav class="pages" aria-label="Project">
+      <a href="#hero" aria-current="page">Case study</a>
+      <a href="studio.html" data-to="studio">Prototype</a>
+    </nav>
   </div>
 </header>
 
@@ -278,7 +285,7 @@ footer b{color:var(--text-2);font-weight:500}
     <p class="lede">I invented a Copenhagen pizzeria, built its brand, directed a 46-second winter film with AI image and video tools, and designed the system that lets its agency and its staff run a new campaign every season.</p>
     <div class="ctas">
       <a class="btn btn-primary" href="https://youtu.be/uKLgVxUSLTU" target="_blank" rel="noopener">Watch the film ↗</a>
-      <a class="btn btn-ghost" href="studio.html" >Open the prototype ↗</a>
+      <a class="btn btn-ghost" href="studio.html" data-to="studio">Open the prototype</a>
     </div>
   </div>
 </section>
@@ -589,7 +596,7 @@ footer b{color:var(--text-2);font-weight:500}
       <div class="callout"><b>Agency view</b><p>Each season's idea, film, menu and deliverables, in one place.</p></div>
       <div class="callout"><b>Restaurant view</b><p>Change a dish, and the menu card, post and story update together, on-brand.</p></div>
       <div class="callout"><b>Brand rules</b><p>Logo, colour, type, photography and how FORNO writes. Both views follow them.</p></div>
-      <a class="btn btn-primary" href="studio.html" target="_blank" rel="noopener" style="justify-self:start">Try the prototype ↗</a>
+      <a class="btn btn-primary" href="studio.html" data-to="studio" style="justify-self:start">Try the prototype</a>
     </div>
   </div>
   <div class="g2" style="margin-top:20px">
@@ -627,7 +634,7 @@ footer b{color:var(--text-2);font-weight:500}
   </div>
   <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:36px">
     <a class="btn btn-primary" href="https://youtu.be/uKLgVxUSLTU" target="_blank" rel="noopener">Watch the film ↗</a>
-    <a class="btn btn-ghost" href="studio.html" >Open the prototype ↗</a>
+    <a class="btn btn-ghost" href="studio.html" data-to="studio">Open the prototype</a>
   </div>
 </section>
 
